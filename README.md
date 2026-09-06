@@ -129,38 +129,40 @@ A synchronous serial interface (250 kHz, similar to SPI), polled 100 times/sec, 
 
 ## 💻 Software Layout
 
-**STM32 / Zephyr Firmware**
+### STM32 / Zephyr Firmware
 
+```
 hexapod-firmware/
-├── prj.conf (enables I2C, SPI, UART, FPU)
+├── prj.conf                 # enables I2C, SPI, UART, FPU
 ├── src/
-│ ├── main.c (creates threads, starts timer)
-│ ├── drivers/
-│ │ ├── pca9685.c (I2C burst write to PWM chip)
-│ │ ├── ps2.c (SPI polling, analog-enable)
-│ │ └── comms.c (UART framing, CRC8 check)
-│ ├── control/
-│ │ ├── ik.c (closed-form IK math)
-│ │ ├── gait.c (tripod / ripple / wave)
-│ │ └── servo_mgr.c (angle limits, channel map)
-│ └── app/
-│ ├── hexapod.c (state: IDLE / MANUAL / AUTO)
-│ └── safety.c (watchdog, low-battery)
+│   ├── main.c                # creates threads, starts timer
+│   ├── drivers/
+│   │   ├── pca9685.c          # I2C burst write to PWM chip
+│   │   ├── ps2.c              # SPI polling, analog-enable
+│   │   └── comms.c            # UART framing, CRC8 check
+│   ├── control/
+│   │   ├── ik.c                # closed-form IK math
+│   │   ├── gait.c              # tripod / ripple / wave
+│   │   └── servo_mgr.c         # angle limits, channel map
+│   └── app/
+│       ├── hexapod.c           # state: IDLE / MANUAL / AUTO
+│       └── safety.c            # watchdog, low-battery
+```
 
+### Raspberry Pi / ROS2
 
-**Raspberry Pi / ROS2**
-
+```
 hexapod-rpi/
 ├── ros2_ws/src/
-│ ├── hexapod_bridge/ (UART <-> ROS2 message bridge)
-│ ├── vision_node/ (camera + obstacle detection)
-│ └── nav_node/ (path planning, sends commands to STM32)
+│   ├── hexapod_bridge/       # UART <-> ROS2 message bridge
+│   ├── vision_node/          # camera + obstacle detection
+│   └── nav_node/             # path planning, sends commands to STM32
 ├── scripts/
-│ ├── calibrate.py (per-servo trim offset tool)
-│ └── tune_gait.py (live gait parameter tuning)
+│   ├── calibrate.py           # per-servo trim offset tool
+│   └── tune_gait.py           # live gait parameter tuning
 └── config/
-└── robot.yaml (leg lengths, servo limits)
-
+    └── robot.yaml             # leg lengths, servo limits
+```
 
 ---
 
